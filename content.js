@@ -6,37 +6,37 @@
     let isShortcutSequenceBroken = false;
 
     /**
-     * تتحقق مما إذا كان الحرف المُمرر ينتمي إلى لغة تُكتب من اليمين إلى اليسار.
-     * @param {string} char - الحرف المراد التحقق منه.
-     * @returns {boolean} true إذا كان الحرف RTL، false خلاف ذلك.
+     * Checks if the provided character belongs to a right-to-left (RTL) language.
+     * @param {string} char - The character to check.
+     * @returns {boolean} Returns true if the character is RTL, otherwise false.
      */
     function isRTL(char) {
         const rtlRange = new RegExp("[" +
-            "\u0590-\u05FF" + // العبرية
-            "\u0600-\u06FF" + // العربية
-            "\u0700-\u074F" + // السريانية
-            "\u0750-\u077F" + // المكمل العربي
-            "\u0780-\u07BF" + // التانا
-            "\u08A0-\u08FF" + // العربية الموسعة-A
-            "\uFB1D-\uFDFF" + // أشكال تقديمية للعبري والعربية-A
-            "\uFE70-\uFEFF" + // أشكال تقديمية للعربية-B
-            "\u{10E60}-\u{10E7F}" + // رموز أرقام رومي
-            "\u{1EE00}-\u{1EEFF}" + // رموز رياضية عربية
+            "\u0590-\u05FF" + // Hebrew
+            "\u0600-\u06FF" + // Arabic
+            "\u0700-\u074F" + // Syriac
+            "\u0750-\u077F" + // Arabic Supplement
+            "\u0780-\u07BF" + // Thaana
+            "\u08A0-\u08FF" + // Arabic Extended-A
+            "\uFB1D-\uFDFF" + // Hebrew and Arabic Presentation Forms-A
+            "\uFE70-\uFEFF" + // Arabic Presentation Forms-B
+            "\u{10E60}-\u{10E7F}" + // Rumi Numeral Symbols
+            "\u{1EE00}-\u{1EEFF}" + // Arabic Mathematical Alphabetic Symbols
         "]", "u");
         return rtlRange.test(char);
     }
 
     /**
-     * يقوم بتعيين اتجاه النص ومحاذاة العنصر.
-     * @param {HTMLElement} element - العنصر المُراد تغييره.
-     * @param {string} dir - اتجاه النص ("rtl" أو "ltr").
-     * @param {boolean} [isManual=false] - تحدد إذا كان التغيير نتيجة تدخل يدوي.
+     * Sets the text direction and alignment of the given element.
+     * @param {HTMLElement} element - The element to modify.
+     * @param {string} dir - The text direction ("rtl" or "ltr").
+     * @param {boolean} [isManual=false] - Indicates if the change was triggered manually.
      */
     function setDirection(element, dir, isManual = false) {
         element.style.direction = dir;
         const computedStyle = window.getComputedStyle(element);
         const textAlign = computedStyle.getPropertyValue('text-align');
-        // في حال كانت المحاذاة "right" أو "left" يتم إعادة تعيينها إلى "start"
+        // If the text alignment is "right" or "left", reset it to "start"
         if (textAlign === "right" || textAlign === "left") {
             element.style.textAlign = "start";
         }
@@ -46,35 +46,35 @@
     }
 
     /**
-     * تتحقق مما إذا كان العنصر قابلاً للتعديل.
-     * @param {HTMLElement} element - العنصر المُراد التحقق منه.
-     * @returns {boolean} true إذا كان قابلاً للتعديل، false خلاف ذلك.
+     * Checks if the element is editable.
+     * @param {HTMLElement} element - The element to check.
+     * @returns {boolean} Returns true if the element is editable, otherwise false.
      */
     function isEditable(element) {
         return element.isContentEditable || element.tagName === "INPUT" || element.tagName === "TEXTAREA";
     }
 
     /**
-     * يحدد ما إذا كان يجب تغيير اتجاه النص تلقائيًا للعنصر.
-     * @param {HTMLElement} element - العنصر المُراد فحصه.
-     * @returns {boolean} true إذا كان التغيير التلقائي مسموحًا، false خلاف ذلك.
+     * Determines whether the element is eligible for an automatic text direction change.
+     * @param {HTMLElement} element - The element to evaluate.
+     * @returns {boolean} Returns true if automatic direction change is allowed, otherwise false.
      */
     function shouldAutoChangeDirection(element) {
         if (element.dataset.auto === "false") {
             return false;
         }
-        // الحصول على اتجاه الصفحة من عناصر html و body
+        // Retrieve the page direction from the html and body elements
         const htmlDir = document.documentElement.getAttribute("dir") || window.getComputedStyle(document.documentElement).direction;
         const bodyDir = document.body.getAttribute("dir") || window.getComputedStyle(document.body).direction;
         const textAlign = window.getComputedStyle(element).getPropertyValue('text-align');
-        // السماح بتغيير الاتجاه تلقائيًا إذا لم يكن اتجاه الصفحة RTL أو إذا لم تكن المحاذاة "right"
+        // Allow automatic direction change if the page direction is not RTL or if the text alignment is not "right"
         return (htmlDir !== "rtl" && bodyDir !== "rtl") || textAlign !== "right";
     }
 
     /**
-     * يستخرج القيمة النصية من العنصر.
-     * @param {HTMLElement} element - العنصر المُراد استخراج القيمة منه.
-     * @returns {string} محتوى النص أو قيمة العنصر.
+     * Extracts the text content or value from the element.
+     * @param {HTMLElement} element - The element from which to extract the value.
+     * @returns {string} The text content or the element's value.
      */
     function getValue(element) {
         if (element.contentEditable === "true") {
@@ -84,8 +84,8 @@
     }
 
     /**
-     * يعالج حدث keydown لتتبع المفاتيح المضغوطة.
-     * @param {KeyboardEvent} event - حدث ضغط المفتاح.
+     * Handles the keydown event to track the pressed keys.
+     * @param {KeyboardEvent} event - The keydown event.
      */
     function handleKeydown(event) {
         if (pressedKeys.size === 0) {
@@ -97,15 +97,15 @@
     }
 
     /**
-     * يعالج حدث keyup للتبديل اليدوي باستخدام اختصارات لوحة المفاتيح.
-     * @param {KeyboardEvent} event - حدث رفع المفتاح.
+     * Handles the keyup event to allow manual switching using keyboard shortcuts.
+     * @param {KeyboardEvent} event - The keyup event.
      */
     function handleKeyup(event) {
-        // ننسخ المفاتيح المضغوطة قبل الإزالة
+        // Copy the current pressed keys before removing the released key
         const currentPressedKeys = Array.from(pressedKeys.values());
         pressedKeys.delete(event.code);
 
-        // إذا لم يكن العدد الدقيق للمفاتيح المضغوطة هو 2 أو إذا لم يكن المفتاح المُحرر "Control" أو "Shift"، نعتبر التسلسل مكسورًا.
+        // If the exact number of pressed keys is not 2, or if the released key is neither "Control" nor "Shift", consider the sequence broken.
         if (currentPressedKeys.length !== 2 || (event.key !== 'Control' && event.key !== 'Shift')) {
             isShortcutSequenceBroken = true;
         }
@@ -119,11 +119,11 @@
             return;
         }
 
-        // الحصول على آخر مفتاح تم ضغطه ضمن التسلسل
+        // Retrieve the last key event in the sequence
         const lastKeyEvent = currentPressedKeys[1];
         if (!lastKeyEvent) return;
 
-        // التبديل اليدوي: التحقق من ضغط (Control + Shift) مع معرفة جهة المفتاح (Right أو Left) باستخدام event.code.
+        // Manual switching: Check if (Control + Shift) is pressed along with an arrow key (Right or Left) using event.code.
         if (lastKeyEvent.ctrlKey && lastKeyEvent.shiftKey) {
             if (lastKeyEvent.code.endsWith("Right")) {
                 setDirection(element, "rtl", true);
@@ -134,8 +134,8 @@
     }
 
     /**
-     * يعالج حدث الإدخال لتغيير اتجاه النص تلقائيًا.
-     * @param {InputEvent} event - حدث الإدخال.
+     * Handles the input event to automatically change the text direction.
+     * @param {InputEvent} event - The input event.
      */
     function handleInput(event) {
         const element = event.target;
@@ -146,7 +146,7 @@
         if (value === "") {
             element.dataset.auto = "true";
         } else if (shouldAutoChangeDirection(element)) {
-            // البحث عن أول حرف ينتمي للفئة \p{L} (أي حرف)
+            // Search for the first character that belongs to the \p{L} category (i.e., any letter)
             const match = value.match(/\p{L}/u);
             if (match) {
                 const char = match[0];
@@ -160,14 +160,14 @@
     }
 
     /**
-     * يعيد ضبط حالة المفاتيح عند تغير التركيز.
-     * @param {FocusEvent} event - حدث تغيير التركيز.
+     * Resets the state of pressed keys when focus changes.
+     * @param {FocusEvent} event - The focus change event.
      */
     function handleFocus(event) {
         pressedKeys.clear();
     }
 
-    // إضافة مستمعي الأحداث مع استخدام "true" للالتقاط قبل الأحداث الأخرى
+    // Add event listeners with capturing enabled (true) so they are triggered before other event handlers.
     document.addEventListener("keydown", handleKeydown, true);
     document.addEventListener("keyup", handleKeyup, true);
     document.addEventListener("input", handleInput, true);
