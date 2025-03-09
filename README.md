@@ -19,17 +19,40 @@ This file includes the core functionality of the extension:
 
 ---
 
-## **Code Functionality Explanation**  
+## **Code Functionality Explanation (For Non-Technical Users)**  
 
-- **Automatic text direction change:**  
-  The extension monitors text entered in editable fields. Upon detecting the first character, it determines whether it belongs to an RTL language and adjusts the CSS **`direction`** property accordingly to "rtl" or "ltr". Additionally, text alignment is reset to "start" for proper layout consistency.  
+This extension helps users by **automatically adjusting text direction** based on the language they type. It also allows **manual switching** using simple keyboard shortcuts. Here’s how it works:  
 
-- **Manual switching using keyboard shortcuts:**  
-  Users can override the automatic text direction by pressing **Control + Shift + Right Arrow** to set text direction to "rtl" or **Control + Shift + Left Arrow** to set it to "ltr".  
-  The extension tracks key presses (`keydown` and `keyup`) to ensure the correct shortcut sequence is detected.  
+### **1. Automatic Text Direction**  
+- When you start typing in a text box (such as a search bar, comment box, or input field), the extension **detects the first letter**.  
+- If the first letter is from a **right-to-left (RTL) language** (like Arabic or Hebrew), the text direction will be set to **right-to-left** automatically.  
+- If the first letter is from a **left-to-right (LTR) language** (like English), the text will align from **left to right**.  
+- This helps users type naturally without needing to adjust the text direction manually.  
 
-- **Field validation:**  
-  The script ensures that the functionality applies only to editable fields (such as input fields and `contentEditable` elements) while ignoring non-editable fields like password inputs.  
+### **2. Manual Text Direction Switching (Keyboard Shortcuts)**  
+- If you ever need to change the text direction manually, you can use these shortcuts:  
+  - **Press `Control + Shift + Right Arrow`** → Switch text to **right-to-left (RTL)**.  
+  - **Press `Control + Shift + Left Arrow`** → Switch text to **left-to-right (LTR)**.  
+- This is useful if you’re typing in mixed languages and want full control over text direction.  
+
+### **3. Works Only in Editable Fields**  
+- The extension applies these changes **only** in places where you can type, such as:  
+  - **Search bars**  
+  - **Comment sections**  
+  - **Message boxes**  
+  - **Text input fields**  
+- It **does not affect** password fields or other non-editable areas.  
+
+### **4. Prevents Unwanted Changes**  
+- If you manually change the text direction, the extension **remembers your choice** and won’t override it.  
+- It also checks the **overall page settings** to avoid interfering with websites that already have a specific text direction set.  
+
+With this extension, you can type naturally in any language without worrying about adjusting the text direction manually. It saves time and ensures a smoother writing experience! 
+
+
+---
+
+## **Code Functionality Explanation (For Technical Users)**  
 
 Below is a table summarizing each function in the code along with its purpose:
 
@@ -49,16 +72,18 @@ You can include this table within your README file to clearly document each func
 
 ---
 
-## **Installation Steps (For Non-Technical Users)**  
+## **Installation Steps**  
 
 1. **Create the extension files:**  
    - Create a new folder on your computer (e.g., **`smart-text-direction`**).  
    - Inside the folder, create two files:  
      - **`manifest.json`** and paste the corresponding manifest content.  
      - **`content.js`** and paste the script provided above.  
-   - Ensure you also have an **`icons`** folder containing icons in sizes **16×16**, **48×48**, and **128×128** pixels.  
+   - Ensure you also have an **`icons`** folder containing icons in sizes **16×16**, **48×48**, and **128×128** pixels.
+   - Or just download the code from the main repository page. and everything will be arranged to proceed to step 2 below.
 
-2. **Open Chrome:**  
+2. **Open your Chrome-based browser such as Google Chrome, Microsoft Edge, etc.:**  
+   - For the sake of this tutorial, we will explain things in Google Chrome browser.
    - Open the Chrome browser and type **`chrome://extensions`** in the address bar.  
 
 3. **Enable Developer Mode:**  
