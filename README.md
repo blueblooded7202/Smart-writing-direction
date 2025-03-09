@@ -58,7 +58,7 @@ Below is a table summarizing each function in the code along with its purpose:
 
 | **Function**                                | **Purpose**                                                                                                                                                   |
 |---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `isRTL(char)`                               | Checks if the provided character belongs to a right-to-left language (e.g., Arabic, Hebrew) using a regular expression.                                        |
+| `isRTL`                                     | Checks if the provided character belongs to a right-to-left language (e.g., Arabic, Hebrew) using a regular expression.                                        |
 | `setDirection`                              | Sets the text direction of the specified element to either "rtl" or "ltr", adjusts text alignment to "start" if needed, and marks manual changes when applicable. |
 | `isEditable`                                | Determines whether the element is editable (e.g., an input field, textarea, or contentEditable element).                                                       |
 | `shouldAutoChangeDirection`                 | Evaluates if the element is eligible for automatic text direction change based on its data attributes, page direction, and text alignment.                     |
@@ -67,7 +67,7 @@ Below is a table summarizing each function in the code along with its purpose:
 | `handleKeyup`                               | Processes the keyup event to validate the shortcut sequence and, if correct (Control + Shift with an arrow key), manually switches the text direction.    |
 | `handleInput`                               | Monitors input events on editable fields and automatically changes the text direction based on the first character entered.                                 |
 | `handleFocus`                               | Resets the tracking of pressed keys when focus changes, ensuring a fresh state for detecting keyboard shortcuts.                                             |
-| `observeMutations`                          | Resets the tracking of pressed keys when focus changes, ensuring a fresh state for detecting keyboard shortcuts.                                             |
+| `observeMutations`                          | Monitors changes in the DOM (including text modifications and the addition of new elements) for editable elements, and calls the handleInput function to automatically update the text direction whenever any change occurs.       |
 
 
 You can include this table within your README file to clearly document each function's role in the code.
